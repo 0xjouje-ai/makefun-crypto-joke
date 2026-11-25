@@ -8,8 +8,18 @@ const LINE =
   "My trading plan has two rules: sell the green candle too early, and hold the red candle forever.";
 
 // The gate only accepts UTF-8 text of 1 to 200 characters, not only
-// whitespace: refuse to write anything that would fail it.
-if (LINE.length < 1 || LINE.length > 200 || LINE.trim() === "" || LINE.includes("\n")) {
+// whitespace: refuse to write anything that would fail it. The contest
+// wants exactly one line, so also reject leading/trailing whitespace
+// (a stray space or newline would change the joke) and require the line
+// to end with a period, matching the entry's one-sentence format.
+if (
+  LINE.length < 1 ||
+  LINE.length > 200 ||
+  LINE.trim() === "" ||
+  LINE.includes("\n") ||
+  LINE !== LINE.trim() ||
+  !LINE.endsWith(".")
+) {
   throw new Error(`entry line fails the gate: ${LINE.length} characters`);
 }
 
